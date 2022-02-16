@@ -20,7 +20,7 @@ function Home() {
             setData(data);
         })();
     }, [])
-    
+    console.log(data)
 
     return (
         <>
