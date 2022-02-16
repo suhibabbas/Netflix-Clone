@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import {useState} from 'react';
 import axios from 'axios';
 
-function UpdateModal( {show,handleClose,ele,getFavRecipes,
+function UpdateModal( {show,handleClose,ele,getMovie,
     titleInput,
     setTitleInput,
     imageInput,
@@ -15,11 +15,11 @@ function UpdateModal( {show,handleClose,ele,getFavRecipes,
     console.log(titleInput);
     const update = async(id)=>{
 
-        let updated = {}
+        let updated = {title:titleInput, image:imageInput,overview:ele.overview, comment:commentInput}
         
       await axios.put(`${process.env.REACT_APP_BASE_URL}/UPDATE/${id}`,updated)
                   .then(()=>{
-                    getFavRecipes();
+                    getMovie();
                   }).catch(err=>{
                       console.log(err);
                   })
