@@ -2,8 +2,16 @@ import axios from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import { Button, Container, Row, Card, Col } from 'react-bootstrap';
 import './FavList.css';
+import UpdateModal from './Updata/UpdataModal';
 function FavList() {
     const [data, setData] = useState([]);
+    const [show, setShow] = useState(false);
+    const [ele,setEle] = useState({});
+
+    const [title, setTitleInput] = useState("");
+    const[image,setImageInput]= useState("");
+    const [comment,setCommentInput] =useState("");
+    const handleClose= () =>setShow(false);
 
     const getMovie = async () => {
         return await axios.get(`${process.env.REACT_APP_BASE_URL}/favorite`)
@@ -31,6 +39,8 @@ function FavList() {
       })
     }
 
+    
+
     return (
         <>
             <Container className='div-container'>
@@ -49,7 +59,16 @@ function FavList() {
                                             {ele.comment}
                                         </Card.Text>
                                         <div>
-                                            <Button className='div-card-button' variant="primary" >Update</Button>
+                                            <Button className='div-card-button' variant="primary" 
+                                            onClick={()=>{
+                                                setShow(true);
+                                                setEle(ele);
+                                                setTitleInput(ele.title)
+                                                setCommentInput(ele.comment);
+                                                setImageInput(`https://image.tmdb.org/t/p/w500/${ele.poster_path}`)
+
+                                            }}
+                                            >Update</Button>
                                             <Button className='div-card-button' variant="danger" 
                                             onClick={()=>deleteMovie(ele.id)}
                                             >Delete</Button>
@@ -66,6 +85,15 @@ function FavList() {
             {
                 !data.length && <div><h2>No Such Results, Please try again later</h2></div>
             }
+            {<UpdateModal show={show} handleClose={handleClose} ele={ele} getMovie={getMovie}
+            titleInput={title}
+            setTitleInput= {setTitleInput}
+            imageInput ={image}
+            setImageInput = {image}
+            commentInput = {comment}
+            setCommentInput ={setCommentInput}
+            />}
+
         </>
     )
 }
